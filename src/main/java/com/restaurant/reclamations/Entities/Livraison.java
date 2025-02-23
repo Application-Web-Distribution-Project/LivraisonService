@@ -20,7 +20,8 @@ public class Livraison {
     Long id;
 
     String adresse;
-    String statut; // Ex: "En cours", "Livré", "Annulé"
+    @Enumerated(EnumType.STRING)
+    Statut status = Statut.EN_COURS;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     LocalDateTime dateLivraison;
 
