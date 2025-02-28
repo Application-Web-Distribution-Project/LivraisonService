@@ -1,9 +1,10 @@
 package com.restaurant.reclamations.Controllers;
 
-import com.restaurant.reclamations.Entities.Reclamation;
-import com.restaurant.reclamations.Entities.StatusReclamation;
+import com.restaurant.reclamations.DTO.ReclamationDTO;
 import com.restaurant.reclamations.Services.ReclamationService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,41 +12,44 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/reclamations")
+@RequiredArgsConstructor
 public class ReclamationController {
-    @Autowired
-    private ReclamationService reclamationService;  // Injection de l'interface
 
+    private final ReclamationService reclamationService;
 
-    // Ajouter une réclamation
-    @PostMapping("/add")
-    public ResponseEntity<Reclamation> createReclamation(@RequestBody Reclamation reclamation) {
-        return ResponseEntity.ok(reclamationService.addReclamation(reclamation));
+    // ✅ CORS appliqué uniquement ici
+    @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*", allowCredentials = "true")
+    @PostMapping
+    public ResponseEntity<ReclamationDTO> createReclamation(@RequestBody ReclamationDTO reclamationDTO) {
+        System.out.println("📥 Réclamation reçue : " + reclamationDTO);
+        ReclamationDTO createdReclamation = reclamationService.createReclamation(reclamationDTO);
+
+        // ✅ Ajout des headers CORS dans la réponse
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Access-Control-Allow-Origin", "*");
+        headers.add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization");
+
+        return ResponseEntity.status(HttpStatus.CREATED).headers(headers).body(createdReclamation);
     }
 
-    // Récupérer toutes les réclamations
-    @GetMapping("/all")
-    public ResponseEntity<List<Reclamation>> getAllReclamations() {
+    @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping
+    public ResponseEntity<List<ReclamationDTO>> getAllReclamations() {
         return ResponseEntity.ok(reclamationService.getAllReclamations());
     }
 
-    // Récupérer une réclamation par son ID
-    @GetMapping("/get/{id}")
-    public ResponseEntity<Reclamation> getReclamationById(@PathVariable Long id) {
-        return reclamationService.getReclamationById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*", allowCredentials = "true")
+    @GetMapping("/{id}")
+    public ResponseEntity<ReclamationDTO> getReclamationById(@PathVariable Long id) {
+        System.out.println("🔍 Requête reçue avec ID : " + id);
+        return ResponseEntity.ok(reclamationService.getReclamationById(id));
     }
 
-    // Mettre à jour le statut d'une réclamation
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Reclamation> updateReclamation(@PathVariable Long id, @RequestParam StatusReclamation status) {
-        return ResponseEntity.ok(reclamationService.updateReclamation(id, status));
-    }
-
-    // Supprimer une réclamation
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<Void> deleteReclamation(@PathVariable Long id) {
+    @CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*", allowCredentials = "true")
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteReclamation(@PathVariable Long id) {
         reclamationService.deleteReclamation(id);
-        return ResponseEntity.noContent().build();
     }
 }
