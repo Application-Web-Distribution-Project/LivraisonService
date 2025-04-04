@@ -1,10 +1,10 @@
-# Use official OpenJDK image as base
-FROM openjdk:17-jdk-slim
+# Use Eclipse Temurin image as base
+FROM eclipse-temurin:17-jdk-jammy
 
 # Set working directory
 WORKDIR /app
 
-# Copy the JAR file from the target folder
+# Be specific about the JAR file name
 COPY target/Reclamation_Service-0.0.1-SNAPSHOT.jar /app/reclamation-service.jar
 
 # Expose the port for the Reclamation service

@@ -7,6 +7,8 @@ import lombok.experimental.FieldDefaults;
 import com.restaurant.reclamations.DTO.CommandeDTO;
 import com.restaurant.reclamations.DTO.UserDTO;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -36,4 +38,7 @@ public class Reclamation {
     @Transient
     @JsonIgnore
     UserDTO user; // Récupéré via FeignClient
+
+    @OneToMany(mappedBy = "reclamation", cascade = CascadeType.ALL)
+    private List<StatusHistory> statusHistory = new ArrayList<>();
 }
