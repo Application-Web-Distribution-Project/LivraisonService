@@ -20,16 +20,27 @@ public class LivraisonDTO {
     private Status status;
     private String adresseLivraison;
     private LocalDateTime dateHeureCommande;
-
-    private UserDTO user; // Transient - Récupéré via FeignClient
-    private CommandeDTO commande; // Transient - Récupéré via FeignClient
+    private Double latitude; // Pour le suivi en temps réel
+    private Double longitude;
+    private Boolean confirmeParClient;
+    private Boolean annulee;
+    private String raisonAnnulation;
+    private LocalDateTime dateLivraison;
 
     // Constructeur pour convertir une entité Reclamation en DTO
     public LivraisonDTO(Livraison livraison) {
         this.id = livraison.getId();
         this.commandeId = livraison.getCommandeId();
+        this.livreurId = Math.toIntExact(livraison.getLivreurId());
         this.status = livraison.getStatus();
         this.adresseLivraison = livraison.getAdresseLivraison();
         this.dateHeureCommande = livraison.getDateHeureCommande();
+        this.latitude = livraison.getLatitude();
+        this.longitude = livraison.getLongitude();
+        this.confirmeParClient = livraison.getConfirmeParClient();
+        this.annulee = livraison.getAnnulee();
+        this.raisonAnnulation = livraison.getRaisonAnnulation();
+        this.dateLivraison = livraison.getDateLivraison();
+
     }
 }

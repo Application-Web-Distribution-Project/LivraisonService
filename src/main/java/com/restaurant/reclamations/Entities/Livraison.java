@@ -19,16 +19,28 @@ import java.util.List;
 public class Livraison {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int id;
+    private int id;
 
-    int commandeId;
+    private int commandeId;
 
-    int livreurId;
+    private Long livreurId;
 
-    String adresseLivraison;
+    private String adresseLivraison;
 
     @Enumerated(EnumType.STRING)
     Status status;
 
-    LocalDateTime dateHeureCommande;
+    private LocalDateTime dateHeureCommande;
+
+    @Column
+    private Double latitude;
+    @Column//Pour le suivi en temps réel
+    private Double longitude;
+    @Column
+    private Boolean confirmeParClient;
+    @Column
+    private Boolean annulee = false;
+
+    private String raisonAnnulation;
+    private LocalDateTime dateLivraison;
 }
