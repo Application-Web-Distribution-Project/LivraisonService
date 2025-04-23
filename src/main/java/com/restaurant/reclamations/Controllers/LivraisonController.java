@@ -25,7 +25,7 @@ public class LivraisonController {
         return ResponseEntity.ok(savedLivraison);
     }
 
-
+    
     // ✅ Mettre à jour le statut d'une livraison
     @PutMapping("/{id}/statut")
     public ResponseEntity<LivraisonDTO> mettreAJourStatut(@PathVariable int id, @RequestParam Status statut) {

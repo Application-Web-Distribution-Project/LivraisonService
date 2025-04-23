@@ -21,10 +21,26 @@ public class Livraison {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private int commandeId;
+    private String commandeId;
 
-    private Long livreurId;
-
+    // ID du client qui a passé la commande
+    String userId;
+    
+    // ID du livreur assigné à cette livraison
+    String livreurId;
+    
+    @Transient
+    @JsonIgnore
+    UserDTO client; // Client qui a passé la commande
+    
+    @Transient
+    @JsonIgnore
+    UserDTO livreur; // Livreur assigné
+    
+    @Transient
+    @JsonIgnore
+    CommandeDTO commande; // Récupéré via FeignClient
+    
     private String adresseLivraison;
 
     @Enumerated(EnumType.STRING)

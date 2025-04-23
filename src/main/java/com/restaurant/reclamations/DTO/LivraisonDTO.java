@@ -15,8 +15,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class LivraisonDTO {
     private int id;
-    private int livreurId;
-    private int commandeId;
+    private String userId; // ID du client qui a passé la commande
+    private String livreurId; // ID du livreur assigné à cette livraison
+    private String commandeId;
     private Status status;
     private String adresseLivraison;
     private LocalDateTime dateHeureCommande;
@@ -27,11 +28,16 @@ public class LivraisonDTO {
     private String raisonAnnulation;
     private LocalDateTime dateLivraison;
 
-    // Constructeur pour convertir une entité Reclamation en DTO
+    private UserDTO client; // Client qui a passé la commande (récupéré via FeignClient)
+    private UserDTO livreur; // Livreur assigné (récupéré via FeignClient)
+    private CommandeDTO commande; // Récupéré via FeignClient
+    
+    // Constructeur pour convertir une entité Livraison en DTO
     public LivraisonDTO(Livraison livraison) {
         this.id = livraison.getId();
         this.commandeId = livraison.getCommandeId();
-        this.livreurId = Math.toIntExact(livraison.getLivreurId());
+        this.userId = livraison.getUserId();
+        this.livreurId = livraison.getLivreurId();
         this.status = livraison.getStatus();
         this.adresseLivraison = livraison.getAdresseLivraison();
         this.dateHeureCommande = livraison.getDateHeureCommande();
@@ -41,6 +47,5 @@ public class LivraisonDTO {
         this.annulee = livraison.getAnnulee();
         this.raisonAnnulation = livraison.getRaisonAnnulation();
         this.dateLivraison = livraison.getDateLivraison();
-
     }
 }
